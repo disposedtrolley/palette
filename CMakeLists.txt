@@ -10,21 +10,21 @@ target_include_directories(stb INTERFACE vendor/stb)
 add_library(unity STATIC vendor/Unity/src/unity.c)
 target_include_directories(unity PUBLIC vendor/Unity/src)
 
+# Internal libraries
+add_library(lib STATIC lib/colour.c)
+target_include_directories(lib PUBLIC lib)
+
 # Main executable
-set(SOURCES
-        src/main.c)
-
 add_executable(colourfu
-        ${SOURCES})
+        main.c)
 
-target_link_libraries(colourfu stb)
+target_link_libraries(colourfu lib stb)
 
 # Test executable
 include(CTest)
 add_executable(colourfu_test
-        tests/test.c)
+        tests/colour_test.c)
 
-set_property(TARGET colourfu PROPERTY ENABLE_EXPORTS 1)  # Allow linking to the main executable.
-target_link_libraries(colourfu_test colourfu unity)
+target_link_libraries(colourfu_test lib unity)
 
 add_test(colourfu colourfu_test)
