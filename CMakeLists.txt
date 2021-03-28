@@ -2,6 +2,8 @@ project(colourfu C)
 
 cmake_minimum_required(VERSION 3.17)
 
+set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -DUNITY_INCLUDE_DOUBLE -DUNITY_DOUBLE_PRECISION=1e-12")
+
 # STB
 add_library(stb INTERFACE)
 target_include_directories(stb INTERFACE vendor/stb)

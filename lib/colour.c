@@ -1,7 +1,7 @@
 #include <colour.h>
 
 double_t compand_rgb_channel(uint8_t chan) {
-    double_t var_chan = chan / (double)255;
+    double_t var_chan = (double)chan / (double)255;
     if (var_chan > 0.04045) {
         var_chan = pow(((var_chan  + 0.055) / 1.055), 2.4);
     } else {
