@@ -13,6 +13,20 @@ void test_rgb_to_ciexyz() {
     TEST_ASSERT_EQUAL_DOUBLE(17.988937960048638, xyz.X);
     TEST_ASSERT_EQUAL_DOUBLE(8.700708704519439, xyz.Y);
     TEST_ASSERT_EQUAL_DOUBLE(75.59419357206868, xyz.Z);
+
+    RGB p2 = { 0, 0, 0 };
+    rgb_to_ciexyz(&p2, &xyz);
+
+    TEST_ASSERT_EQUAL_DOUBLE(0, xyz.X);
+    TEST_ASSERT_EQUAL_DOUBLE(0, xyz.Y);
+    TEST_ASSERT_EQUAL_DOUBLE(0, xyz.Z);
+
+    RGB p3 = { 255, 255, 255 };
+    rgb_to_ciexyz(&p3, &xyz);
+
+    TEST_ASSERT_EQUAL_DOUBLE(95.05, xyz.X);
+    TEST_ASSERT_EQUAL_DOUBLE(100, xyz.Y);
+    TEST_ASSERT_EQUAL_DOUBLE(108.89999999999999, xyz.Z);
 }
 
 void test_ciexyz_to_cielab() {
@@ -23,6 +37,20 @@ void test_ciexyz_to_cielab() {
     TEST_ASSERT_EQUAL_DOUBLE(35.40154806418358, out.L);
     TEST_ASSERT_EQUAL_DOUBLE(65.51462077077721, out.a);
     TEST_ASSERT_EQUAL_DOUBLE(-88.4715662266948, out.b);
+
+    CIEXYZ xyz2 = { 0, 0, 0 };
+    ciexyz_to_cielab(&xyz2, D65_2_Reference, &out);
+
+    TEST_ASSERT_EQUAL_DOUBLE(0, out.L);
+    TEST_ASSERT_EQUAL_DOUBLE(0, out.a);
+    TEST_ASSERT_EQUAL_DOUBLE(0, out.b);
+
+    CIEXYZ xyz3 = { 95.05, 100, 108.89999999999999 };
+    ciexyz_to_cielab(&xyz3, D65_2_Reference, &out);
+
+    TEST_ASSERT_EQUAL_DOUBLE(100, out.L);
+    TEST_ASSERT_EQUAL_DOUBLE(0.0052604999583039103, out.a);
+    TEST_ASSERT_EQUAL_DOUBLE(-0.010408184525267927, out.b);
 }
 
 int main(void) {
