@@ -22,6 +22,33 @@ void rgb_to_ciexyz(RGB *p, CIEXYZ *out) {
     out->Z = var_R * 0.0193 + var_G * 0.1192 + var_B * 0.9505;
 }
 
+double_t normalise_xyz_channel(double_t chan) {
+    if (chan > 0.008856) {
+        chan = pow(chan, (double)1/(double)3);
+    } else {
+        chan = (7.787 * chan) + ((double)16/(double)116);
+    }
+
+    return chan;
+}
+
+const CIE_Reference D65_2_Reference = { 95.047, 100.000, 108.883 };
+
+void ciexyz_to_cielab(CIEXYZ *p, const CIE_Reference ref, CIELab *out) {
+    // See http://www.easyrgb.com/en/math.php
+    double_t var_X = p->X / ref[0];
+    double_t var_Y = p->Y / ref[1];
+    double_t var_Z = p->Z / ref[2];
+
+    var_X = normalise_xyz_channel(var_X);
+    var_Y = normalise_xyz_channel(var_Y);
+    var_Z = normalise_xyz_channel(var_Z);
+
+    out->L = ((double)116 * var_Y) - (double)16;
+    out->a = (double)500 * (var_X - var_Y);
+    out->b = (double)200 * (var_Y - var_Z);
+}
+
 double_t distance(RGB *p1, RGB *p2) {
     uint8_t cR = p1->R - p2->R;
     uint8_t cG = p1->G - p2->G;
