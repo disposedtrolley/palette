@@ -1,5 +1,4 @@
-#ifndef COLOUR_H
-#define COLOUR_H
+#pragma once
 
 #include <stdint.h>
 #include <math.h>
@@ -36,5 +35,3 @@ void ciexyz_to_cielab(CIEXYZ *p, const CIE_Reference ref, CIELab *out);
 
 // distance returns the euclidean distance between the RGB pixels p1 and p2.
 double_t distance(RGB *p1, RGB *p2);
-
-#endif /* COLOUR_H */
