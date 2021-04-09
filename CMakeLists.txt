@@ -1,4 +1,4 @@
-project(colourfu C)
+project(palette C)
 
 cmake_minimum_required(VERSION 3.17)
 
@@ -17,16 +17,16 @@ add_library(lib STATIC lib/colour.c)
 target_include_directories(lib PUBLIC lib)
 
 # Main executable
-add_executable(colourfu
+add_executable(palette
         main.c)
 
-target_link_libraries(colourfu lib stb)
+target_link_libraries(palette lib stb)
 
 # Test executable
 include(CTest)
-add_executable(colourfu_test
+add_executable(palette_test
         tests/colour_test.c)
 
-target_link_libraries(colourfu_test lib unity)
+target_link_libraries(palette_test lib unity)
 
-add_test(colourfu colourfu_test)
+add_test(palette palette_test)
