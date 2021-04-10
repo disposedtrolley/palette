@@ -10,6 +10,8 @@ int main(void) {
         printf("x: %d y: %d channels: %d\n", img.x, img.y, img.channels);
     }
 
+    image_unload(&img);
+
 
 //    for (unsigned char *img_p = img; img_p != img + img_size; img_p += n) {
 //        RGB p = {

@@ -12,6 +12,9 @@ typedef struct {
     int channels;
 } Image;
 
-// load loads the image found at filename into target.
+// image_load loads the image found at filename into target.
 // A non-zero return indicates failure.
 int image_load(const char *filename, Image *target);
+
+// image_unload frees the target Image from memory.
+int image_unload(Image *target);

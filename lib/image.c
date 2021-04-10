@@ -21,3 +21,8 @@ int image_load(const char *filename, Image *target) {
 
     return 0;
 }
+
+int image_unload(Image *target) {
+    stbi_image_free(target->data);
+    return 0;
+}
