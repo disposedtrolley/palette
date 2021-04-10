@@ -13,8 +13,11 @@ add_library(unity STATIC vendor/Unity/src/unity.c)
 target_include_directories(unity PUBLIC vendor/Unity/src)
 
 # Internal libraries
-add_library(lib STATIC lib/colour.c)
+add_library(lib STATIC
+        lib/colour.c
+        lib/image.c)
 target_include_directories(lib PUBLIC lib)
+target_link_libraries(lib stb)
 
 # Main executable
 add_executable(palette
