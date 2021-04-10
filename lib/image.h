@@ -2,13 +2,16 @@
 
 #include<stdint.h>
 
+// Image represents an image that has been decoded into memory.
 typedef struct {
+    // Contiguous block of pixel data of y rows of x pixels each.
+    // Each pixel consists of 8 bits * channels.
     unsigned char *data;
     int x;
     int y;
-    int z;
+    int channels;
 } Image;
 
 // load loads the image found at filename into target.
 // A non-zero return indicates failure.
-int load(const char *filename, Image *target);
+int image_load(const char *filename, Image *target);
