@@ -3,8 +3,10 @@
 #include <stdio.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#define STBI_FAILURE_USERMSG
 #include <stb_image.h>
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#include <stb_image_resize.h>
+#define STBI_FAILURE_USERMSG
 
 int image_load(const char *filename, Image *target) {
     int x, y, channels;
@@ -24,6 +26,27 @@ int image_load(const char *filename, Image *target) {
 
 int image_unload(Image *target) {
     stbi_image_free(target->data);
+    return EXIT_SUCCESS;
+}
+
+int image_downsize(const Image *target, Image *resized) {
+    const int rw = target->x / DOWNSIZED_IMAGE_MIN_DIMENSION;
+    const int rh = target->y / DOWNSIZED_IMAGE_MIN_DIMENSION;
+    const int ratio = rw < rh ? rw : rh;
+
+    resized->x = target->x / ratio;
+    resized->y = target->y / ratio;
+    resized->channels = target->channels;
+    resized->data = malloc(resized->x * resized->y * resized->channels);
+
+    const int ret = stbir_resize_uint8(
+            target->data, target->x, target->y,0,
+            resized->data, resized->x, resized->y,0,
+            resized->channels);
+    if (ret != EXIT_SUCCESS) {
+        fprintf(stderr, "Error rezising image: %s\n", stbi_failure_reason());
+    }
+
     return EXIT_SUCCESS;
 }
 

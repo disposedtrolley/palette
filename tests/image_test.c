@@ -30,6 +30,20 @@ void test_image_unload() {
     // catch any exceptions.
 }
 
+void test_image_downsize() {
+    Image img = {0};
+
+    int ret = image_load(filename, &img);
+    TEST_ASSERT_EQUAL(0, ret);
+
+    Image resized_img = {0};
+    ret = image_downsize(&img, &resized_img);
+    TEST_ASSERT_EQUAL(0, ret);
+    TEST_ASSERT_EQUAL(img.channels, resized_img.channels);
+    TEST_ASSERT_EQUAL(664, resized_img.x);
+    TEST_ASSERT_EQUAL(442, resized_img.y);
+}
+
 void test_pixel_get() {
     Image img = {0};
 
@@ -63,6 +77,7 @@ int main(void) {
 
     RUN_TEST(test_image_load);
     RUN_TEST(test_image_unload);
+    RUN_TEST(test_image_downsize);
     RUN_TEST(test_pixel_get);
 
     return UNITY_END();
