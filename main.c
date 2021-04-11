@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <colour.h>
 #include <image.h>
 
@@ -35,5 +36,5 @@ int main(void) {
 //
 //    printf("distance: %.2f\n", distance(&p1, &p2));
 //    printf("distance: %.2f\n", distance(&p2, &p3));
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -11,7 +11,7 @@ int image_load(const char *filename, Image *target) {
     unsigned char *img = stbi_load(filename, &x, &y, &channels,0);
     if (img == NULL) {
         fprintf(stderr, "Error loading image file at %s: %s\n", filename, stbi_failure_reason());
-        return 1;
+        return EXIT_FAILURE;
     }
 
     target->data = img;
@@ -19,12 +19,12 @@ int image_load(const char *filename, Image *target) {
     target->y = y;
     target->channels = channels;
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int image_unload(Image *target) {
     stbi_image_free(target->data);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 // pointer_to_coordinate returns a pointer to the beginning of
