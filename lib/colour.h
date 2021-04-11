@@ -35,3 +35,7 @@ void ciexyz_to_cielab(CIEXYZ *p, const CIE_Reference ref, CIELab *out);
 
 // distance returns the euclidean distance between the RGB pixels p1 and p2.
 double_t distance(RGB *p1, RGB *p2);
+
+// delta_e_76 returns the Delta E 76 difference value between the CIELab
+// colours a and b.
+double delta_e_76(CIELab *a, CIELab *b);

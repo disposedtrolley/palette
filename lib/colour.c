@@ -59,3 +59,10 @@ double_t distance(RGB *p1, RGB *p2) {
             cR*cR*(2+(double)uR/256) + cG*cG*4 + cB*cB*(2+(double)(255-uR)/256),
             (double)1/3);
 }
+
+double delta_e_76(CIELab *a, CIELab *b) {
+    return sqrt(
+        pow(b->L - a->L, 2) +
+        pow(b->a - a->a, 2) +
+        pow(b->b - a->b, 2));
+}

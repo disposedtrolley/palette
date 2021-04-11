@@ -53,11 +53,22 @@ void test_ciexyz_to_cielab() {
     TEST_ASSERT_EQUAL_DOUBLE(-0.010408184525267927, out.b);
 }
 
+void test_delta_e_76() {
+    CIELab a = {35.40, 65.51, -88.47};
+    CIELab b = {35.40, 65.51, -88.47};
+    TEST_ASSERT_EQUAL_DOUBLE(0, delta_e_76(&a, &b));
+
+    CIELab c = {58, 44, 38};
+    CIELab d = {53, 52, 28};
+    TEST_ASSERT_EQUAL_DOUBLE(13.74772708486752, delta_e_76(&c, &d));
+}
+
 int main(void) {
     UNITY_BEGIN();
 
     RUN_TEST(test_rgb_to_ciexyz);
     RUN_TEST(test_ciexyz_to_cielab);
+    RUN_TEST(test_delta_e_76);
 
     return UNITY_END();
 }
