@@ -59,20 +59,9 @@ unsigned char* pointer_to_coordinate(Image *target, int x, int y) {
 }
 
 int pixel_get(Image *target, int x, int y, RGB *pixel) {
-    if (target->channels < 3) {
-        fprintf(stderr, "Image has less than 3 channels\n");
-        return EXIT_FAILURE;
-    }
-
-    if (x < 0 || x >= target->x) {
-        fprintf(stderr, "x value %d is out of range\n", x);
-        return EXIT_FAILURE;
-    }
-
-    if (y < 0 || y >= target->y) {
-        fprintf(stderr, "y value %d is out of range\n", y);
-        return EXIT_FAILURE;
-    }
+    assert(("Image should have at least 3 channels", target->channels >= 3));
+    assert(("0 <= x < target.width", x >= 0 && x < target->x));
+    assert(("0 <= y < target.height", y >= 0 && y < target->y));
 
     unsigned char *pixel_start = pointer_to_coordinate(target, x, y);
 

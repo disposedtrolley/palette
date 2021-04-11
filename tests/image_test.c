@@ -64,12 +64,6 @@ void test_pixel_get() {
     TEST_ASSERT_EQUAL(35, pixel.R);
     TEST_ASSERT_EQUAL(43, pixel.G);
     TEST_ASSERT_EQUAL(56, pixel.B);
-
-    ret = pixel_get(&img, -1, -1, &pixel);
-    TEST_ASSERT_EQUAL(1, ret);
-
-    ret = pixel_get(&img, 10000, 10000, &pixel);
-    TEST_ASSERT_EQUAL(1, ret);
 }
 
 int main(void) {
