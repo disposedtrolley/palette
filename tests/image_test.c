@@ -30,10 +30,40 @@ void test_image_unload() {
     // catch any exceptions.
 }
 
+void test_pixel_get() {
+    Image img = {0};
+
+    int ret = image_load(filename, &img);
+    TEST_ASSERT_EQUAL(0, ret);
+
+    RGB pixel = {0};
+    ret = pixel_get(&img, 0, 0, &pixel);
+    TEST_ASSERT_EQUAL(0, ret);
+
+    TEST_ASSERT_EQUAL(67, pixel.R);
+    TEST_ASSERT_EQUAL(78, pixel.G);
+    TEST_ASSERT_EQUAL(98, pixel.B);
+
+    ret = pixel_get(&img, 5976, 3984, &pixel);
+    TEST_ASSERT_EQUAL(0, ret);
+
+    TEST_ASSERT_EQUAL(35, pixel.R);
+    TEST_ASSERT_EQUAL(43, pixel.G);
+    TEST_ASSERT_EQUAL(56, pixel.B);
+
+    ret = pixel_get(&img, -1, -1, &pixel);
+    TEST_ASSERT_EQUAL(1, ret);
+
+    ret = pixel_get(&img, 10000, 10000, &pixel);
+    TEST_ASSERT_EQUAL(1, ret);
+}
+
 int main(void) {
     UNITY_BEGIN();
 
     RUN_TEST(test_image_load);
+    RUN_TEST(test_image_unload);
+    RUN_TEST(test_pixel_get);
 
     return UNITY_END();
 }

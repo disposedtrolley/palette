@@ -26,3 +26,36 @@ int image_unload(Image *target) {
     stbi_image_free(target->data);
     return 0;
 }
+
+// pointer_to_coordinate returns a pointer to the beginning of
+// target's data where the x and y coordinate lies.
+unsigned char* pointer_to_coordinate(Image *target, int x, int y) {
+    int row_offset = (y * target->y) * target->channels;
+    int col_offset = (x * target->channels);
+    return target->data + (row_offset + col_offset);
+}
+
+int pixel_get(Image *target, int x, int y, RGB *pixel) {
+    if (target->channels < 3) {
+        fprintf(stderr, "Image has less than 3 channels\n");
+        return EXIT_FAILURE;
+    }
+
+    if (x < 0 || x >= target->x) {
+        fprintf(stderr, "x value %d is out of range\n", x);
+        return EXIT_FAILURE;
+    }
+
+    if (y < 0 || y >= target->y) {
+        fprintf(stderr, "y value %d is out of range\n", y);
+        return EXIT_FAILURE;
+    }
+
+    unsigned char *pixel_start = pointer_to_coordinate(target, x, y);
+
+    pixel->R = *pixel_start;
+    pixel->G = *(pixel_start + 1);
+    pixel->B = *(pixel_start + 2);
+
+    return EXIT_SUCCESS;
+}
