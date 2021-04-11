@@ -27,9 +27,15 @@ target_link_libraries(palette lib stb)
 
 # Test executable
 include(CTest)
-add_executable(palette_test
+
+add_executable(colour_test
         tests/colour_test.c)
+target_link_libraries(colour_test lib unity)
 
-target_link_libraries(palette_test lib unity)
+add_executable(image_test
+        tests/image_test.c)
+target_link_libraries(image_test lib unity)
 
-add_test(palette palette_test)
+add_test(palette image_test colour_test)
+
+configure_file(tests/_DSF0914.jpg _DSF0914.jpg COPYONLY)
