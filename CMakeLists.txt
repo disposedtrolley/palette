@@ -15,7 +15,8 @@ target_include_directories(unity PUBLIC vendor/Unity/src)
 # Internal libraries
 add_library(lib STATIC
         lib/colour.c
-        lib/image.c)
+        lib/image.c
+        lib/cluster.c)
 target_include_directories(lib PUBLIC lib)
 target_link_libraries(lib stb)
 
@@ -37,5 +38,10 @@ add_executable(image_test
         tests/image_test.c)
 target_link_libraries(image_test lib unity)
 add_test(image_test image_test)
+
+add_executable(cluster_test
+        tests/cluster_test.c)
+target_link_libraries(cluster_test lib unity)
+add_test(cluster_test cluster_test)
 
 configure_file(tests/_DSF0914.jpg _DSF0914.jpg COPYONLY)
