@@ -45,3 +45,4 @@ target_link_libraries(cluster_test lib unity)
 add_test(cluster_test cluster_test)
 
 configure_file(tests/_DSF0914.jpg _DSF0914.jpg COPYONLY)
+configure_file(tests/orange.jpg orange.jpg COPYONLY)
