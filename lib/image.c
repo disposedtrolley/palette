@@ -8,6 +8,8 @@
 #include <stb_image_resize.h>
 #define STBI_FAILURE_USERMSG
 
+static const int STBI_ERROR = 0;
+
 int image_load(const char *filename, Image *target) {
     int x, y, channels;
     unsigned char *img = stbi_load(filename, &x, &y, &channels,0);
@@ -49,12 +51,13 @@ int image_downsize(const Image *target, Image *resized) {
     resized->channels = target->channels;
     resized->data = malloc(resized->x * resized->y * resized->channels);
 
-    const int ret = stbir_resize_uint8(
+    const int stbi_ret = stbir_resize_uint8(
             target->data, target->x, target->y,0,
             resized->data, resized->x, resized->y,0,
             resized->channels);
-    if (ret != EXIT_SUCCESS) {
+    if (stbi_ret == STBI_ERROR) {
         fprintf(stderr, "Error rezising image: %s\n", stbi_failure_reason());
+        return EXIT_FAILURE;
     }
 
     return EXIT_SUCCESS;
