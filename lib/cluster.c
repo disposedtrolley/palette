@@ -2,8 +2,9 @@
 #include <stdlib.h>
 
  int points_from_image(const Image *target, Point *points_array, size_t *len) {
-    for (int x = 0; x < target->x; x+=1) {
-        for (int y = 0; y < target->y; y+=1) {
+    size_t i = 0;
+    for (int x = 0; x < target->x; x++) {
+        for (int y = 0; y < target->y; y++) {
             RGB pixel = {0};
             int ret = pixel_get(target, x, y, &pixel);
             if (ret != EXIT_SUCCESS) {
@@ -16,7 +17,8 @@
                     .pixel = pixel,
             };
 
-            points_array[x + y] = p;
+            points_array[i] = p;
+            i++;
         }
     }
 
