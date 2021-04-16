@@ -16,8 +16,9 @@ void test_points_from_image() {
     TEST_ASSERT_EQUAL(0, ret);
 
     Point *points = malloc(img.x * img.y * sizeof(Point));
+    size_t len;
 
-    ret = points_from_image(&img, points);
+    ret = points_from_image(&img, points, &len);
     TEST_ASSERT_EQUAL(0, ret);
 
     Point first_pixel_point = points[0];
@@ -26,6 +27,8 @@ void test_points_from_image() {
     TEST_ASSERT_EQUAL(67, first_pixel_point.pixel.R);
     TEST_ASSERT_EQUAL(78, first_pixel_point.pixel.G);
     TEST_ASSERT_EQUAL(98, first_pixel_point.pixel.B);
+
+    TEST_ASSERT_EQUAL(23818345, len);
 }
 
 int main(void) {

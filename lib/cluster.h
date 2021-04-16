@@ -1,6 +1,7 @@
 #pragma once
 
 #include <image.h>
+#include <stdlib.h>
 
 // Point represents a pixel within an image.
 typedef struct {
@@ -17,6 +18,6 @@ typedef struct {
 } Cluster;
 
 // points_from_image fills points with an array of Point instances for
-// each pixel of the target.
+// each pixel of the target. len is populated with the length of points_array.
 // A non-zero return value indicates failure.
-int points_from_image(Image *target, Point *points_array);
+int points_from_image(Image *target, Point *points_array, size_t *len);
