@@ -30,6 +30,16 @@ int image_unload(Image *target) {
 }
 
 int image_downsize(const Image *target, Image *resized) {
+    // TODO unit test
+    if (target->x <= DOWNSIZED_IMAGE_MIN_DIMENSION || target->y <= DOWNSIZED_IMAGE_MIN_DIMENSION) {
+        // If the original image is small enough, return it as the downsized.
+        resized->x = target->x;
+        resized->y = target->y;
+        resized->channels = target->channels;
+        resized->data = target->data;
+        return EXIT_SUCCESS;
+    }
+
     const int rw = target->x / DOWNSIZED_IMAGE_MIN_DIMENSION;
     const int rh = target->y / DOWNSIZED_IMAGE_MIN_DIMENSION;
     const int ratio = rw < rh ? rw : rh;
