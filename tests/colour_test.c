@@ -45,27 +45,43 @@ void test_rgb_to_ciexyz() {
 }
 
 void test_ciexyz_to_cielab() {
-    CIEXYZ xyz = {17.988937960048638, 8.700708704519439, 75.59419357206868};
-    CIELab out = {};
-    ciexyz_to_cielab(&xyz, D65_2_Reference, &out);
+    typedef struct {
+        char *name;
+        CIEXYZ input_xyz;
+        CIELab expected_lab;
+    } testcase;
 
-    TEST_ASSERT_EQUAL_DOUBLE(35.40154806418358, out.L);
-    TEST_ASSERT_EQUAL_DOUBLE(65.51462077077721, out.a);
-    TEST_ASSERT_EQUAL_DOUBLE(-88.4715662266948, out.b);
+    testcase tests[] = {
+            {
+                .name = "when a CIEXYZ pixel is converted to CIELab",
+                .input_xyz = (CIEXYZ){17.988937960048638, 8.700708704519439, 75.59419357206868},
+                .expected_lab = (CIELab){35.40154806418358, 65.51462077077721, -88.4715662266948},
+            },
+            {
+                .name = "when a black CIEXYZ pixel is converted to CIELab",
+                .input_xyz = (CIEXYZ){0, 0, 0},
+                .expected_lab = (CIELab){0, 0, 0},
+            },
+            {
+                .name = "when a white CIEXYZ pixel is converted to CIELabn",
+                .input_xyz = (CIEXYZ){95.05, 100, 108.89999999999999},
+                .expected_lab = (CIELab){100, 0.0052604999583039103, -0.010408184525267927},
+            }
+    };
 
-    CIEXYZ xyz2 = { 0, 0, 0 };
-    ciexyz_to_cielab(&xyz2, D65_2_Reference, &out);
+    for (size_t i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
+        testcase tc = tests[i];
 
-    TEST_ASSERT_EQUAL_DOUBLE(0, out.L);
-    TEST_ASSERT_EQUAL_DOUBLE(0, out.a);
-    TEST_ASSERT_EQUAL_DOUBLE(0, out.b);
+        TEST_MESSAGE(tc.name);
 
-    CIEXYZ xyz3 = { 95.05, 100, 108.89999999999999 };
-    ciexyz_to_cielab(&xyz3, D65_2_Reference, &out);
+        CIELab actual = {0};
 
-    TEST_ASSERT_EQUAL_DOUBLE(100, out.L);
-    TEST_ASSERT_EQUAL_DOUBLE(0.0052604999583039103, out.a);
-    TEST_ASSERT_EQUAL_DOUBLE(-0.010408184525267927, out.b);
+        ciexyz_to_cielab(&tc.input_xyz, D65_2_Reference, &actual);
+
+        TEST_ASSERT_EQUAL_DOUBLE(tc.expected_lab.L, actual.L);
+        TEST_ASSERT_EQUAL_DOUBLE(tc.expected_lab.a, actual.a);
+        TEST_ASSERT_EQUAL_DOUBLE(tc.expected_lab.b, actual.b);
+    }
 }
 
 void test_delta_e_76() {
