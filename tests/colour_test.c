@@ -6,27 +6,42 @@ void setUp(void) {}
 void tearDown(void) {}
 
 void test_rgb_to_ciexyz() {
-    RGB p = { 76, 39, 230 };
-    CIEXYZ xyz = {};
-    rgb_to_ciexyz(&p, &xyz);
+    typedef struct {
+        char *name;
+        RGB input_rgb;
+        CIEXYZ expected_ciexyz;
+    } testcase;
 
-    TEST_ASSERT_EQUAL_DOUBLE(17.988937960048638, xyz.X);
-    TEST_ASSERT_EQUAL_DOUBLE(8.700708704519439, xyz.Y);
-    TEST_ASSERT_EQUAL_DOUBLE(75.59419357206868, xyz.Z);
+    testcase tests[] = {
+            {
+                .name = "when an RGB pixel is converted to CIEXYZ",
+                .input_rgb = (RGB){76, 39, 230},
+                .expected_ciexyz = (CIEXYZ){17.988937960048638, 8.700708704519439, 75.59419357206868},
+            },
+            {
+                .name = "when a black RGB pixel is converted to CIEXYZ",
+                .input_rgb = (RGB){0, 0, 0},
+                .expected_ciexyz = (CIEXYZ){0, 0, 0},
+            },
+            {
+                .name = "when a white RGB pixel is converted to CIEXYZ",
+                .input_rgb = (RGB){255, 255, 255},
+                .expected_ciexyz = (CIEXYZ){95.05, 100, 108.89999999999999},
+            }
+    };
 
-    RGB p2 = { 0, 0, 0 };
-    rgb_to_ciexyz(&p2, &xyz);
+    for (size_t i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
+        testcase tc = tests[i];
 
-    TEST_ASSERT_EQUAL_DOUBLE(0, xyz.X);
-    TEST_ASSERT_EQUAL_DOUBLE(0, xyz.Y);
-    TEST_ASSERT_EQUAL_DOUBLE(0, xyz.Z);
+        TEST_MESSAGE(tc.name);
 
-    RGB p3 = { 255, 255, 255 };
-    rgb_to_ciexyz(&p3, &xyz);
+        CIEXYZ actual = {0};
+        rgb_to_ciexyz(&tc.input_rgb, &actual);
 
-    TEST_ASSERT_EQUAL_DOUBLE(95.05, xyz.X);
-    TEST_ASSERT_EQUAL_DOUBLE(100, xyz.Y);
-    TEST_ASSERT_EQUAL_DOUBLE(108.89999999999999, xyz.Z);
+        TEST_ASSERT_EQUAL_DOUBLE(tc.expected_ciexyz.X, actual.X);
+        TEST_ASSERT_EQUAL_DOUBLE(tc.expected_ciexyz.Y, actual.Y);
+        TEST_ASSERT_EQUAL_DOUBLE(tc.expected_ciexyz.Z, actual.Z);
+    }
 }
 
 void test_ciexyz_to_cielab() {
