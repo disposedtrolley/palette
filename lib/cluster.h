@@ -20,4 +20,4 @@ typedef struct {
 // points_from_image fills points with an array of Point instances for
 // each pixel of the target. len is populated with the length of points_array.
 // A non-zero return value indicates failure.
-int points_from_image(Image *target, Point *points_array, size_t *len);
+int points_from_image(const Image *target, Point *points_array, size_t *len);

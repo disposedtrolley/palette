@@ -1,6 +1,6 @@
 #include <colour.h>
 
-double_t compand_rgb_channel(uint8_t chan) {
+double_t compand_rgb_channel(const uint8_t chan) {
     double_t var_chan = (double)chan / (double)255;
     if (var_chan > 0.04045) {
         var_chan = pow(((var_chan  + 0.055) / 1.055), 2.4);
@@ -11,7 +11,7 @@ double_t compand_rgb_channel(uint8_t chan) {
     return var_chan * (double)100;
 }
 
-void rgb_to_ciexyz(RGB *p, CIEXYZ *out) {
+void rgb_to_ciexyz(const RGB *p, CIEXYZ *out) {
     // See http://www.easyrgb.com/en/math.php
     double_t var_R = compand_rgb_channel(p->R);
     double_t var_G = compand_rgb_channel(p->G);
@@ -22,19 +22,20 @@ void rgb_to_ciexyz(RGB *p, CIEXYZ *out) {
     out->Z = var_R * 0.0193 + var_G * 0.1192 + var_B * 0.9505;
 }
 
-double_t normalise_xyz_channel(double_t chan) {
+double_t normalise_xyz_channel(const double_t chan) {
+    double_t normalised = chan;
     if (chan > 0.008856) {
-        chan = pow(chan, (double)1/(double)3);
+        normalised = pow(chan, (double)1/(double)3);
     } else {
-        chan = (7.787 * chan) + ((double)16/(double)116);
+        normalised = (7.787 * chan) + ((double)16/(double)116);
     }
 
-    return chan;
+    return normalised;
 }
 
 const CIE_Reference D65_2_Reference = { 95.047, 100.000, 108.883 };
 
-void ciexyz_to_cielab(CIEXYZ *p, const CIE_Reference ref, CIELab *out) {
+void ciexyz_to_cielab(const CIEXYZ *p, const CIE_Reference ref, CIELab *out) {
     // See http://www.easyrgb.com/en/math.php
     double_t var_X = p->X / ref[0];
     double_t var_Y = p->Y / ref[1];
@@ -49,7 +50,7 @@ void ciexyz_to_cielab(CIEXYZ *p, const CIE_Reference ref, CIELab *out) {
     out->b = (double)200 * (var_Y - var_Z);
 }
 
-double_t distance(RGB *p1, RGB *p2) {
+double_t distance(const RGB *p1, const RGB *p2) {
     uint8_t cR = p1->R - p2->R;
     uint8_t cG = p1->G - p2->G;
     uint8_t cB = p1->B - p2->B;
@@ -60,7 +61,7 @@ double_t distance(RGB *p1, RGB *p2) {
             (double)1/3);
 }
 
-double delta_e_76(CIELab *a, CIELab *b) {
+double delta_e_76(const CIELab *a, const CIELab *b) {
     return sqrt(
         pow(b->L - a->L, 2) +
         pow(b->a - a->a, 2) +

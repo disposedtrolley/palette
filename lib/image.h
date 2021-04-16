@@ -31,4 +31,4 @@ int image_downsize(const Image *target, Image *resized);
 // y coordinates of target. x and y can range from 0 to width-1
 // and height-1 respectively.
 // A non-zero return value indicates failure.
-int pixel_get(Image *target, int x, int y, RGB *pixel);
+int pixel_get(const Image *target, int x, int y, RGB *pixel);

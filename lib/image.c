@@ -52,13 +52,13 @@ int image_downsize(const Image *target, Image *resized) {
 
 // pointer_to_coordinate returns a pointer to the beginning of
 // target's data where the x and y coordinate lies.
-unsigned char* pointer_to_coordinate(Image *target, int x, int y) {
+unsigned char* pointer_to_coordinate(const Image *target, int x, int y) {
     int row_offset = (y * target->y) * target->channels;
     int col_offset = (x * target->channels);
     return target->data + (row_offset + col_offset);
 }
 
-int pixel_get(Image *target, int x, int y, RGB *pixel) {
+int pixel_get(const Image *target, int x, int y, RGB *pixel) {
     assert(("Image should have at least 3 channels", target->channels >= 3));
     assert(("0 <= x < target.width", x >= 0 && x < target->x));
     assert(("0 <= y < target.height", y >= 0 && y < target->y));
